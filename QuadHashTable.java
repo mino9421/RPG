@@ -1,4 +1,4 @@
-package Hashing;
+package RPG;
 
 public class QuadHashTable {
     private String[] table;                         //  this is the array
