@@ -146,7 +146,7 @@ public class Main {
             ShopItem si = ht.get(choice);
             if (si != null)
             {
-                    
+                    // we need to make sure the player has enough coins and space in backpack
                     p.buy(si.item);
                     p.withdraw(si.item.cost);
                     si.numberInStock--;
