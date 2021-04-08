@@ -5,4 +5,6 @@ public class Backpack {
     private int maxitems;
     private double currWeight;
     private double maxWeight;
+
+    
 }

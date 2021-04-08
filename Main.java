@@ -6,10 +6,32 @@
 */
 package RPG;
 
+import java.time.chrono.MinguoChronology;
 import java.util.Scanner;
 
 public class Main {
     
+    public static void menuPrint(Scanner menu)
+    {
+        System.out.println("1.Add Item To Shop");
+        System.out.println("2.Delete Item From Shop");
+        System.out.println("3.Buy From The Shop");
+        System.out.println("4.View Backpack");
+        System.out.println("5.View Player");
+        System.out.println("6.Exit");
+
+        while(!menu.hasNextInt())
+        {
+            menu.nextLine();
+            System.out.println("1.Add Item To Shop");
+            System.out.println("2.Delete Item From Shop");
+            System.out.println("3.Buy From The Shop");
+            System.out.println("4.View Backpack");
+            System.out.println("5.View Player");
+            System.out.println("6.Exit");
+        }
+    }
+
     public static int getInteger(Scanner sc,String message){
         System.out.print(message);
         while (!sc.hasNextInt()) 
@@ -31,9 +53,9 @@ public class Main {
     }
     
 
-    public static void addWeapons(ArrayManager h,Scanner sc)
+    public static void addWeapons(ArrayManager h,Scanner sc)                            // after entering player name this is being called
 	{
-		System.out.println("***********WELCOME TO THE WEAPON ADDING MENU*********");
+		System.out.println("***********WELCOME TO THE WEAPON ADDING MENU*********");   
 		String weaponName;
 		int weaponRange;
 		int weaponDamage;
@@ -43,9 +65,9 @@ public class Main {
 		System.out.print("Please enter the NAME of the Weapon ('end' to quit):");
 		weaponName = sc.next();
 
-		while (weaponName.compareTo("end") != 0) {
+		while (weaponName.compareTo("end") != 0) {                                  // this will run until user enters "end"
 			
-			if (h.get(weaponName) == null) {
+			if (h.get(weaponName) == null) {                                        // this will work if 
 
 				weaponRange = getInteger(sc, "Please enter the Range of the Weapon (0-10):");
 				weaponDamage = getInteger(sc, "Please enter the Damage of the Weapon:");
@@ -55,6 +77,7 @@ public class Main {
 
                 // make hash table object, insert w into the hash.
                 // insert the hashed object into a table
+                // not sure when to insert the object yet
 
 				quantity = getInteger(sc, "Please enter the quantity in stock:");
 				h.put(w, quantity);
@@ -75,7 +98,7 @@ public class Main {
 
 
 
-    public static void showRoomMenu(ArrayManager ht,Player p){
+    public static void showRoomMenu(ArrayManager ht,Player p){ 
         System.out.println("WELCOME TO THE SHOWROOM!!!!");
         ht.printTable();
         System.out.println("You have "+p.money+" money.");
@@ -110,46 +133,46 @@ public class Main {
     
     public static void main(String[] args)
     {
+        Scanner menu = new Scanner(System.in);
+        menuPrint(menu);
         Scanner sc = new Scanner(System.in);
         String pname;
         System.out.println("Please enter Player name:");
         pname=sc.next();
-        Player pl= new Player(pname,45);
+        Player pl= new Player(pname,45);                    // the player object is being created with name and default money passed 45.
         ArrayManager ht= new ArrayManager(101);
         addWeapons(ht,sc);
         showRoom(ht, pl,sc);
         pl.printCharacter();
 
     }
-
-
-
 }
 
 
 /*
     Player can NOT buy an item if
-        - do not have enough coins
-        - backpack is or will be overweight if bought
-        - backpack is is full (might be similar to the point above)
+        - do not have enough coins                                          incomplete
+        - backpack is or will be overweight if bought                       this part is working only on 10 items break need to implement weight limit (compared to below has to say backpack will overflow if we added)
+        - backpack is is full (might be similar to the point above)         this has to say backpack is full already
 
     Player starts with 45 coins
-    backpack must be implemented as an object and uses a hash table implemented as sep.chaining to hold the items (weapons) bought
-    max number of items backpack can hold is 30
-    max weight backpack can take is 90 pounds.
+    backpack must be implemented as an object and uses a hash table implemented as sep. chaining to hold the items (weapons) bought
+    max number of items backpack can hold is 30                             max num of items in backpack 30
+    max weight backpack can take is 90 pounds.                              backpack max weight pounds 90
 
 
-    in main program ask user for a NAME for the player
+    in main program ask user for a NAME for the player                      done
     next...
-    present a menu with functionality
-    1. add items to the shop 
-    2. delete items from the shop
-    3. buy from the shop - Allows the player to buy items from the shop. Only items that are in stock (quantity > 0) should be displayed
-    4. view backpack - list of all the items in the player's backpack
-    5. view player - show(print)
+    present a menu with functionality                                       need to create a menuPrint method
+    1. add items to the shop                                                unknown
+    2. delete items from the shop                                           unknown
+    3. buy from the shop - Allows the player to buy items from the shop.
+    Only items that are in stock (quantity > 0) should be displayed         incomplete/ needs to set limit when quantity > 0
+    4. view backpack - list of all the items in the player's backpack       unknown   backpackPrint method  
+    5. view player - show(print)                                            unknown   playerPrint method
                         - the player's name
                         - the amount of coins they have
                         - a list of all the items in their backpack
-    6. exit
+    6. exit                                                                 exit program from menu
 
 */
