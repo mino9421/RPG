@@ -13,30 +13,61 @@ public class Main {
     
     public static void menuPrint(Scanner menu)
     {
-        System.out.println("1.Add Item To Shop");
-        System.out.println("2.Delete Item From Shop");
-        System.out.println("3.Buy From The Shop");
-        System.out.println("4.View Backpack");
-        System.out.println("5.View Player");
-        System.out.println("6.Exit");
-
-        while(!menu.hasNextInt())
+        int menuController;
+        
+        do
         {
-            menu.nextLine();
             System.out.println("1.Add Item To Shop");
             System.out.println("2.Delete Item From Shop");
             System.out.println("3.Buy From The Shop");
             System.out.println("4.View Backpack");
             System.out.println("5.View Player");
             System.out.println("6.Exit");
+            
+            menuController = getInteger(menu);
+
+
+            switch (menuController) {
+                case 1:
+                    System.out.println("You chose 1.Add Item To Shop");  
+                    break;
+                case 2:
+                    System.out.println("You chose 2.Delete Item From Shop");
+                    break;
+                case 3:
+                    System.out.println("You chose 3.Buy From The Shop");
+                    break;
+                case 4:
+                    System.out.println("You chose 4.View Backpack");
+                    break;
+                case 5:
+                    System.out.println("You chose 5.View Player");
+                    break;
+                case 6:
+                    System.out.println("You chose to exit");
+                    break;
+                default:
+                    break;
+            }
         }
+        while(menuController != 6);
+    }
+
+    public static int getInteger(Scanner sc){
+        // System.out.print(message);
+        while (!sc.hasNextInt()) 
+        {
+            sc.nextLine();                  //clear the invalid input ...
+            // System.out.print(message);
+        }
+        return sc.nextInt();
     }
 
     public static int getInteger(Scanner sc,String message){
         System.out.print(message);
         while (!sc.hasNextInt()) 
         {
-            sc.nextLine(); //clear the invalid input ...
+            sc.nextLine();                  //clear the invalid input ...
             System.out.print(message);
         }
         return sc.nextInt();
@@ -133,18 +164,67 @@ public class Main {
     
     public static void main(String[] args)
     {
-        Scanner menu = new Scanner(System.in);
-        menuPrint(menu);
+
+
         Scanner sc = new Scanner(System.in);
         String pname;
+    
         System.out.println("Please enter Player name:");
-        pname=sc.next();
+        pname=sc.next();                                    // user enters player name here
+    
         Player pl= new Player(pname,45);                    // the player object is being created with name and default money passed 45.
+        int menuController;
+        Scanner menu = new Scanner(System.in);
+        
         ArrayManager ht= new ArrayManager(101);
-        addWeapons(ht,sc);
-        showRoom(ht, pl,sc);
-        pl.printCharacter();
 
+
+    
+        addWeapons(ht,sc);
+        // showRoom(ht, pl,sc);
+        // pl.printCharacter();
+
+        do
+        {
+            System.out.println("1.Add Item To Shop");
+            System.out.println("2.Delete Item From Shop");
+            System.out.println("3.Buy From The Shop");
+            System.out.println("4.View Backpack");
+            System.out.println("5.View Player");
+            System.out.println("6.Exit");
+            
+            menuController = getInteger(menu);
+
+
+            switch (menuController) {
+                case 1:
+                    System.out.println("You chose 1.Add Item To Shop");  
+                    break;
+                case 2:
+                    System.out.println("You chose 2.Delete Item From Shop");
+                    break;
+                case 3:
+                    System.out.println("You chose 3.Buy From The Shop");
+                    showRoom(ht, pl,sc);
+                    break;
+                case 4:
+                    System.out.println("You chose 4.View Backpack");
+                    pl.printBackpack();
+                    break;
+                case 5:
+                    System.out.println("You chose 5.View Player");
+                    pl.printCharacter();
+                    break;
+                case 6:
+                    System.out.println("You chose to exit");
+                    break;
+                default:
+                    System.out.println("***Please choose a valid***");
+                    break;
+            }
+        }
+        while(menuController != 6);
+        System.out.println("Game has been terminated");
     }
 }
 
