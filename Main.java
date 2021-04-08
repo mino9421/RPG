@@ -146,7 +146,7 @@ public class Main {
             ShopItem si = ht.get(choice);
             if (si != null)
             {
-
+                    
                     p.buy(si.item);
                     p.withdraw(si.item.cost);
                     si.numberInStock--;
@@ -180,7 +180,7 @@ public class Main {
 
 
     
-        addWeapons(ht,sc);
+        // addWeapons(ht,sc);
         // showRoom(ht, pl,sc);
         // pl.printCharacter();
 
@@ -198,7 +198,8 @@ public class Main {
 
             switch (menuController) {
                 case 1:
-                    System.out.println("You chose 1.Add Item To Shop");  
+                    System.out.println("You chose 1.Add Item To Shop");
+                    addWeapons(ht,sc);
                     break;
                 case 2:
                     System.out.println("You chose 2.Delete Item From Shop");
