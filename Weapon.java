@@ -9,11 +9,13 @@ public class Weapon
         public double cost;
 
         public Weapon(String n, int rang, int dam, double w, double c)
-        {
-            weaponName = n;
-            damage = dam;
-            range = rang;
-            weight = w;
-            cost = c;
-        }
+		{
+			weaponName = n;
+			damage = dam;
+			range = rang;
+			weight = w;
+			cost = c;
+		}
+
+	
     }

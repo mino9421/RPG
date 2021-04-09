@@ -5,8 +5,6 @@
 
 */
 package RPG;
-
-import java.time.chrono.MinguoChronology;
 import java.util.Scanner;
 
 public class Main {
@@ -96,38 +94,50 @@ public class Main {
 		System.out.print("Please enter the NAME of the Weapon ('end' to quit):");
 		weaponName = sc.next();
 
-		while (weaponName.compareTo("end") != 0) {                                  // this will run until user enters "end"
-			
-			if (h.get(weaponName) == null) {                                        // this will work if 
+		while (weaponName.compareTo("end") != 0) { // this will run until user enters "end"
 
-				weaponRange = getInteger(sc, "Please enter the Range of the Weapon (0-10):");
+			    weaponRange = getInteger(sc, "Please enter the Range of the Weapon (0-10):");
 				weaponDamage = getInteger(sc, "Please enter the Damage of the Weapon:");
 				weaponWeight = getDouble(sc, "Please enter the Weight of the Weapon (in pounds):");
 				weaponCost = getDouble(sc, "Please enter the Cost of the Weapon:");
 				Weapon w = new Weapon(weaponName, weaponRange, weaponDamage, weaponWeight, weaponCost);
+			
+                if (h.search(weaponName, weaponWeight, weaponCost) == -1) {                                        // this will work if 
+
+				
 
                 // make hash table object, insert w into the hash.
                 // insert the hashed object into a table
                 // not sure when to insert the object yet
 
 				quantity = getInteger(sc, "Please enter the quantity in stock:");
-				h.put(w, quantity);
+				h.put(weaponName, weaponRange, weaponDamage, weaponWeight, weaponCost, quantity);
+
 				System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
 				weaponName = sc.next();
 			}
 
 			else {
 				
-                System.out.println("The weapon "+weaponName+" already exists");
-				ShopItem s = h.get(weaponName);
-				s.numberInStock += getInteger(sc, "Please the amount of this item you would like ot add: ");
+				System.out.println("The weapon " + weaponName + " already exists");
+                h.table[h.search(weaponName,weaponWeight, weaponCost)].numberInStock+= getInteger(sc, "Please the amount of this item you would like to add: ");
+
                 System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
 				weaponName = sc.next();
 			}
 		}
 	}
 
-
+    public static void deleteWeapon(ArrayManager h, Scanner sc)
+    {
+        System.out.println("***********WELCOME TO THE WEAPON DELETING MENU*********");
+        
+        String weaponName;
+		System.out.print("Please enter the NAME of the Weapon ('end' to quit):");
+		weaponName = sc.next();
+		h.delete(h.get(weaponName).item.weaponName, h.get(weaponName).item.weight, h.get(weaponName).item.cost);
+		
+    }
 
     public static void showRoomMenu(ArrayManager ht,Player p){ 
         System.out.println("WELCOME TO THE SHOWROOM!!!!");
@@ -143,13 +153,35 @@ public class Main {
         choice=sc.next();
         while (choice.compareTo("end") != 0 && !p.inventoryFull())
         {
-            ShopItem si = ht.get(choice);
+			ShopItem si = ht.get(choice);
+
             if (si != null)
-            {
+			{
+				if (p.money >= si.item.cost) { // checking if the player has enough coins ()
+					if (p.weight + si.item.weight <= 90 && p.numItems + 1 <= 30) {
+						if ((si.numberInStock - 1) > 0) {
+
+							p.buy(si.item);
+							p.withdraw(si.item.cost);
+							si.numberInStock--;
+						}
+						else
+                        {
+                            System.out.print("The item is out of stock");
+                        }
+					}
+					else
+                    {
+                         System.out.println("Player backpack is currently full");
+                    }
+					
+				}
+				else
+                {
+					System.out.println("You do not have enough coins to make this purchase.");
+                }
                     // we need to make sure the player has enough coins and space in backpack
-                    p.buy(si.item);
-                    p.withdraw(si.item.cost);
-                    si.numberInStock--;
+                 
 
             }
             else
@@ -176,7 +208,7 @@ public class Main {
         int menuController;
         Scanner menu = new Scanner(System.in);
         
-        ArrayManager ht= new ArrayManager(101);
+        ArrayManager ht= new ArrayManager(11);
 
 
     
@@ -199,14 +231,15 @@ public class Main {
             switch (menuController) {
                 case 1:
                     System.out.println("You chose 1.Add Item To Shop");
-                    addWeapons(ht,sc);
+                    addWeapons(ht, sc);
                     break;
                 case 2:
                     System.out.println("You chose 2.Delete Item From Shop");
+                    deleteWeapon(ht, sc);
                     break;
                 case 3:
                     System.out.println("You chose 3.Buy From The Shop");
-                    showRoom(ht, pl,sc);
+                    showRoom(ht, pl, sc);
                     break;
                 case 4:
                     System.out.println("You chose 4.View Backpack");
@@ -249,11 +282,11 @@ public class Main {
     2. delete items from the shop                                           unknown
     3. buy from the shop - Allows the player to buy items from the shop.
     Only items that are in stock (quantity > 0) should be displayed         incomplete/ needs to set limit when quantity > 0
-    4. view backpack - list of all the items in the player's backpack       unknown   backpackPrint method  
-    5. view player - show(print)                                            unknown   playerPrint method
-                        - the player's name
-                        - the amount of coins they have
-                        - a list of all the items in their backpack
-    6. exit                                                                 exit program from menu
+    4. view backpack - list of all the items in the player's backpack       done     
+    5. view player - show(print)                                            done   
+                        - the player's name                                 
+                        - the amount of coins they have                     
+                        - a list of all the items in their backpack         
+    6. exit                                                                 done
 
 */
