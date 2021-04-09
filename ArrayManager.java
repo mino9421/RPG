@@ -2,8 +2,8 @@ package RPG;
 
 public class ArrayManager {
     
-    int maxItems;               // records the max size of the table
-    int numItems;               // records number of items in the list
+    int maxItems ;               // records the max size of the table
+    int numItems;              // records number of items in the list
 	ShopItem[] table;
 	double loadFactor;
 
@@ -22,7 +22,7 @@ public class ArrayManager {
     public ArrayManager(int max){                //overloaded when there is one argument(int) passed
         table = new ShopItem[max];                    
         maxItems = max;                    
-		loadFactor = 0.75; // load factor is default 0.75(75%) when no argument is passed to it 
+		loadFactor = 0.80; // load factor is default 0.75(75%) when no argument is passed to it 
 
 		numItems = 0;
        
@@ -30,10 +30,10 @@ public class ArrayManager {
     }
     
 	public ArrayManager() { //overloaded when arguments are not passed | current sample in main
-		table = new ShopItem[20]; // default (value for the table is 20 when nothing is passed to the function)
+		table = new ShopItem[97]; // because 0 x 1.2 = 96 and next prime number is 97
         
-		maxItems = 20; // default
-		loadFactor = 0.75; // default
+		maxItems = 97; // default
+		loadFactor = 0.80; // default
 		numItems = 0;
         
 		
@@ -65,10 +65,11 @@ public class ArrayManager {
 				count++;
 			}
 
-			Weapon w = new Weapon(name, range, damage, weight, cost);//weapon/int
+			Weapon w = new Weapon(name, range, damage, weight, cost);
 			table[loc] = new ShopItem(w, quantity);
 			table[loc].item.weaponName = name;
-			table[loc].numberInStock += quantity;
+			// might need an if statement
+			
             numItems++;                                         // something might be up here regarding adding items on top of deleted 
         }
 // if the above code was not excuted in an else statement we can print to notify player with the error, but this is the method that can just do it and we can check for the useability before calling this method
@@ -123,7 +124,8 @@ public class ArrayManager {
 		if (search(name, get(name).item.weight, get(name).item.cost) != -1) {
 			return false;
 		}
-		get(name).item.weaponName = "DELETED";
+		get(name).item.empty = "DELETED";
+       
         return true;
     }
     
@@ -131,7 +133,7 @@ public class ArrayManager {
 		System.out.println("Hash Table Contents");
 		for (int x = 0; x < maxItems; x++) {
 			if (table[x] != null) {
-				System.out.println(x + " - " + table[x].item.weaponName); // + " - " + "Quantity - " + table[x].numberInStock
+				System.out.println(x + " - " + table[x].item.empty); // + " - " + "Quantity - " + table[x].numberInStock
 			} else {
 				System.out.println(x + " - " + "EMPTY");
 			}

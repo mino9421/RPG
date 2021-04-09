@@ -7,7 +7,8 @@ public class Weapon
         public int damage;
         public double weight;
         public double cost;
-
+		String empty = "";
+		int quantity;
         public Weapon(String n, int rang, int dam, double w, double c)
 		{
 			weaponName = n;
@@ -15,7 +16,7 @@ public class Weapon
 			range = rang;
 			weight = w;
 			cost = c;
+			empty = n;
 		}
-
-	
+		
     }
