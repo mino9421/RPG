@@ -6,9 +6,13 @@ public class ShopItem {                         // this is the class that will h
 	String empty = "";// this variable will hold the quantity (not sure !?).
     
 	public ShopItem(Weapon w, int nInStock) {
-		
+
 		item = w;
 		numberInStock = nInStock;
+	}
+
+	public ShopItem(){
+
 	}
 	
 }

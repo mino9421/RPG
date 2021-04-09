@@ -57,18 +57,19 @@ public class ArrayManager {
 	{
 		if (numItems/maxItems < loadFactor){
             int count = 1;
-            int startLoc = hashFunctionThreeWords(name, weight, cost);             // change this function name according to the requirements given
+            int startLoc = hashFunctionThreeWords(name, weight, cost);
 			int loc = startLoc;
-			// (table[loc]!=null && table[loc].compareTo("DELETED")!=0)
+
 			while (table[loc] != null && (!table[loc].item.weaponName.equals("DELETED"))) {
 				loc = (startLoc + count * count) % maxItems;
 				count++;
 			}
+
 			Weapon w = new Weapon(name, range, damage, weight, cost);//weapon/int
 			table[loc] = new ShopItem(w, quantity);
-			table[loc].empty = ""; //we are here
+			table[loc].item.weaponName = name;
 			table[loc].numberInStock += quantity;
-            numItems++;
+            numItems++;                                         // something might be up here regarding adding items on top of deleted 
         }
 // if the above code was not excuted in an else statement we can print to notify player with the error, but this is the method that can just do it and we can check for the useability before calling this method
 	}
@@ -83,14 +84,18 @@ public class ArrayManager {
 
         // (table[loc]!=null && table[loc].compareTo(obj.accountName)!=0)
         
-		while (table[loc] != null && !table[loc].item.weaponName.equals(name) && table[loc].item.weight!=weight&& table[loc].item.cost!=cost)
-        {                          // this needs to be revisited depending on the requirements
+		while       (table[loc] != null &&
+                    get(name)==null  )
+		{ // this needs to be revisited depending on the requirements
 			loc = (startLoc + count * count) % maxItems;
 			count++;
 		}
-		if (table[loc] == null)
-			return -1;
-        // obj.otherVariable = "changed2";                                                                      // this line can change the passed object member value
+        
+		 if (table[loc] != null ) 
+		 {
+		 	return -1;
+		 }
+        
         return loc;
 	}
 
@@ -113,40 +118,24 @@ public class ArrayManager {
     }
 
 
-    public boolean delete(String name, double weight, double cost){
-        
-        int count = 1;
-        int startLoc = hashFunctionThreeWords(name, weight, cost);          // change this function name according to the requirements given
-        int loc = startLoc; 
-        // startLoc above can be replaced with a search call. When the value returns -1 it means the position is null or deleted which leads to the if statement below (alternative code)
-
-		// (table[loc]!=null && table[loc].compareTo(obj.accountName)!=0)
-
-        while (table[loc] != null && !table[loc].item.weaponName.equals(name) && table[loc].item.weight!=weight&& table[loc].item.cost!=cost)
-		{
-			loc = (startLoc + count * count) % maxItems;
-			count++;
+	public boolean delete(String name) {
+		
+		if (search(name, get(name).item.weight, get(name).item.cost) != -1) {
+			return false;
 		}
-		if (table[loc].item.weaponName != null)
-        {
-			return false;// this can check for -1 and if it is true confirms item has been deleted and decrements numItems (alternative code)
-		}
-        table[loc].empty = "DELETED"; 
-		numItems--;
-		return true;
-    } 
+		get(name).item.weaponName = "DELETED";
+        return true;
+    }
     
 	public void printTable() {
 		System.out.println("Hash Table Contents");
 		for (int x = 0; x < maxItems; x++) {
 			if (table[x] != null) {
-				System.out.println(x + " - " + table[x].item.weaponName);
+				System.out.println(x + " - " + table[x].item.weaponName); // + " - " + "Quantity - " + table[x].numberInStock
 			} else {
 				System.out.println(x + " - " + "EMPTY");
 			}
 		}
 		System.out.println("");
 	}
-
-
 }

@@ -102,29 +102,32 @@ public class Main {
 				weaponCost = getDouble(sc, "Please enter the Cost of the Weapon:");
 				Weapon w = new Weapon(weaponName, weaponRange, weaponDamage, weaponWeight, weaponCost);
 			
-                if (h.search(weaponName, weaponWeight, weaponCost) == -1) {                                        // this will work if 
+				if (h.table[h.search(weaponName, weaponWeight, weaponCost)] == null) { 
 
-				
+					// make hash table object, insert w into the hash.
+					// insert the hashed object into a table
+					// not sure when to insert the object yet
 
-                // make hash table object, insert w into the hash.
-                // insert the hashed object into a table
-                // not sure when to insert the object yet
+                    // if(h.search(weaponName, weaponWeight, weaponCost) == -2)
+                    // {
 
-				quantity = getInteger(sc, "Please enter the quantity in stock:");
-				h.put(weaponName, weaponRange, weaponDamage, weaponWeight, weaponCost, quantity);
+                    // }
+					quantity = getInteger(sc, "Please enter the quantity in stock:");
+					h.put(weaponName, weaponRange, weaponDamage, weaponWeight, weaponCost, quantity);
 
-				System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
-				weaponName = sc.next();
-			}
+					System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
+					weaponName = sc.next();
+				}
+               
+                else 
+				{
+                    System.out.println("The weapon " + h.table[h.search(weaponName, weaponWeight, weaponCost)].item.weaponName + " already exists");
+                    h.table[h.search(weaponName,weaponWeight, weaponCost)].numberInStock += 
+                                    getInteger(sc, "Please the amount of this item you would like to add: ");
 
-			else {
-				
-				System.out.println("The weapon " + weaponName + " already exists");
-                h.table[h.search(weaponName,weaponWeight, weaponCost)].numberInStock+= getInteger(sc, "Please the amount of this item you would like to add: ");
-
-                System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
-				weaponName = sc.next();
-			}
+                    System.out.print("Please enter the NAME of another Weapon ('end' to quit):");
+                    weaponName = sc.next();
+                }
 		}
 	}
 
@@ -135,7 +138,22 @@ public class Main {
         String weaponName;
 		System.out.print("Please enter the NAME of the Weapon ('end' to quit):");
 		weaponName = sc.next();
-		h.delete(h.get(weaponName).item.weaponName, h.get(weaponName).item.weight, h.get(weaponName).item.cost);
+		if (h.get(weaponName) == null)
+        {
+			System.out.println("This item does not exist!");
+		} 
+		else
+        {
+            if (h.delete(weaponName) == false)
+            {
+                System.out.println("Item was not deleted!");
+            }
+            else
+            {
+                System.out.println("Item deleted");
+            }
+        }
+
 		
     }
 
@@ -155,7 +173,7 @@ public class Main {
         {
 			ShopItem si = ht.get(choice);
 
-            if (si != null)
+            if (si != null && si.item.weaponName != "DELETED")
 			{
 				if (p.money >= si.item.cost) { // checking if the player has enough coins ()
 					if (p.weight + si.item.weight <= 90 && p.numItems + 1 <= 30) {
@@ -167,7 +185,7 @@ public class Main {
 						}
 						else
                         {
-                            System.out.print("The item is out of stock");
+                            System.out.println("****The item is out of stock****");
                         }
 					}
 					else
@@ -178,7 +196,7 @@ public class Main {
 				}
 				else
                 {
-					System.out.println("You do not have enough coins to make this purchase.");
+					System.out.println("You do not have enough coins to make this purchase or this item was deleted.");
                 }
                     // we need to make sure the player has enough coins and space in backpack
                  
@@ -210,12 +228,6 @@ public class Main {
         
         ArrayManager ht= new ArrayManager(11);
 
-
-    
-        // addWeapons(ht,sc);
-        // showRoom(ht, pl,sc);
-        // pl.printCharacter();
-
         do
         {
             System.out.println("1.Add Item To Shop");
@@ -230,35 +242,35 @@ public class Main {
 
             switch (menuController) {
                 case 1:
-                    System.out.println("You chose 1.Add Item To Shop");
+                    System.out.println("**You chose 1.Add Item To Shop**");
                     addWeapons(ht, sc);
                     break;
                 case 2:
-                    System.out.println("You chose 2.Delete Item From Shop");
+                    System.out.println("**You chose 2.Delete Item From Shop**");
                     deleteWeapon(ht, sc);
                     break;
                 case 3:
-                    System.out.println("You chose 3.Buy From The Shop");
+                    System.out.println("**You chose 3.Buy From The Shop**");
                     showRoom(ht, pl, sc);
                     break;
                 case 4:
-                    System.out.println("You chose 4.View Backpack");
+                    System.out.println("**You chose 4.View Backpack**");
                     pl.printBackpack();
                     break;
                 case 5:
-                    System.out.println("You chose 5.View Player");
+                    System.out.println("**You chose 5.View Player**");
                     pl.printCharacter();
                     break;
                 case 6:
-                    System.out.println("You chose to exit");
+                    System.out.println("**You chose to exit**");
                     break;
                 default:
-                    System.out.println("***Please choose a valid***");
+                    System.out.println("***Please choose a valid option(1-6)***");
                     break;
             }
         }
         while(menuController != 6);
-        System.out.println("Game has been terminated");
+        System.out.println("*****Game has been terminated*****");
     }
 }
 
